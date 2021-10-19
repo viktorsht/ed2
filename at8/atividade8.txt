@@ -1,0 +1,55 @@
+1)
+A função adicionaNo recebe 3 parâmetros. No, Informação e No do seu filho.
+*No = é o nó onde a Informação será adcionada
+Info = valor que será inserido na árvore
+*Filho = recebe NULL
+
+A função inicialmente verifica se o valor a ser adicionado é maior que a informação 1 do Nó,
+caso a condição seja atendida, a informação 2 do nó vai receber a nova informação e o nó a direita recebe
+o filho. Caso contrário, a informação 2 do nó recebe a informação 1, o nó a direita recebe o nó do centro,
+a informação 1 do nó recebe a nova informação, passada nos parâmetros, e o nó do centro recebe o Filho.
+Após a condicional é atualizado o numero de informações para 2 e por fim o nó é retornado.
+
+2)
+
+A função quebraNo recebe 5 parâmetros, sendo eles um ponteiro de ponteiro No, a informação que será adcionada,
+o nó do filho maior, a informação mediana e um novo nó, também ponteiro de ponteiro.
+Inicialmente a função verifica se a nova informação a ser adcionada é menor que a informação 1 do nó, caso a
+condição seja atendida, a informação mediana recebe o nó informação 1, um novo nó recebe o retorno da função criaNo
+passando como parâmetros a informação 2 do nó, o nó do centro e o nó a direita. A informação 1 recebe a
+nova informação, o nó do centro recebe o nó do filho maior, o nó a direita aponta para o NULL e o numero
+de informações do nó é atualizado para 1.
+Caso a condição não seja atendida é verificado se a nova informação é menor que a informação 2 do nó.
+A informação mediana recebe a nova informação, o nó do centro recebe o nó do filho maior, o nó a direita
+recebe NULL e a quantidade de informações do nó é atualizada para 1.
+Caso nenhuma das condições sejam atendidas a informação mediana recebe a informação 2 do nó, o novo nó
+recebe o retorno da função criaNo, passando como parâmetros a nova informação, o nó da direita e o nó do
+filho maior, o nó da direita recebe NULL e o número de informações do nó recebe 1.
+
+3)
+
+1° Passo: inserir 800
+Raiz é NUll, entrada na primeira condição e raiz recebe o retorno da função criaNo que recebe como parâmetro o valor, filho a esquerda(NULL) e filho a direita(NULL). 
+
+2° Passo: inserir 400
+Como raiz diferente de NULL, a primeira condição, do else, é atendida (raiz é folha) e o número de infos é igual a 1. A raiz recebe o adcionaNo com raiz,valor e NULL. 
+
+3° Passo: inserir 1000
+A raiz não é NULL, não é folha e o número de infos é diferente de 1. A função quebraNo é chamada com raiz,valor,NULL, sobe e nó. É verificado depois se o pai é igual a NULL, se for, é criado um novo nó que recebe o retorno da função criaNo recebendo como parâmetros sobe, raiz e nó. A raiz vai receber o novo nó e o nó vai receber NULL.
+
+4° Passo: inserir 200
+A raiz não é NULL, entra no primeiro else, a raiz não é folha e é verificado que o novo valor é menor que o valor 1 da raiz. O nó recebe a função inserir com raiz,raiz->esquerda,valor e sobe. Depois é verificado que a raiz é folha e o número de informações é igual a 1, assim, a raiz irá receber o retorno de adcionaNo com raiz, valor e NULL como parâmetros.
+
+5° Passo: inserir 850
+A raiz não é NULL, entra no primeiro else, a raiz não é folha e é verificado que o novo valor é maior que o valor 1 da raiz. O nó recebe a função inserir com raiz,raiz->centro,valor e sobe. Depois é verificado que a raiz é folha e o número de informações é igual a 1, assim, a raiz irá receber o retorno de adcionaNo com raiz, valor e NULL como parâmetros.
+
+6° Passo: inserir 600
+Raiz não é NULL, raiz não é folha, o valor é menor que o valor da raiz. O nó recebe a função inserir com raiz, raiz->esquerda, valor e sobe. É verificado se a raiz não é NULL, se o número de informações da raiz é diferente de 1 e assim a função quebraNo é chamada com raiz, valor, NULL, sobe e nó em seu parametro. É verificado se o pai é igual a NULL, assim é criado um novo nó que recebe o retorno da função criaNo como parametro sobe, raiz e nó. A raiz passa a ser o novo nó e o nó passa a ser NULL
+
+7° Passo: inserir 1100
+A raiz não é NULL, raiz não é folha, o valor é maior que a info2. É verificado se o valor é maior que a info2, assim, nó recebe a função inserir com raiz, raiz->direita, valor e sobe como parametro. É verificado que o número de informação é diferente de 1 e o nó é quebrado com com a função quebraNo com raiz, valor, NULL e sobe como parametros. É verificado se o pai é igual a NULL, assim é criado um novo nó que recebe o retorno da função criaNo com os parametros sobe, raiz e nó.
+
+8° Passo: inserir 300
+A raiz é diferente de NULL e raiz não é folha.Assim, é verificado que o valor é menor que a info1, assim, nó recebe a função inserir com raiz, raiz->esquerda, valor e sobe como parametro. É verificado que a raiz não é NULL e que é folha, assim o nó é quebrado com com a função quebraNo com raiz, valor, NULL e sobe como parametros. 
+
+

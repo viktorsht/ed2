@@ -1,0 +1,35 @@
+Sequencia: 200,100,300,50,150,120
+
+1P: Inserindo 200
+2P: 100 < 200 - Descendo subarvore esquerda
+3P: 300 > 200 - Descendo subarvore direita - folha nula - inserindo
+4P: 50 < 200 - Descendo subarvore esquerda
+5P: 50 < 100 - Descendo subarvore esquerda - folha nula - inserindo
+6P: 150 < 200 - Descendo subarvore esquerda
+7P: 150 > 100 - Descendo subarvore direita - folha nula - inserindo
+8P: 120 < 200 - Descendo subarvore esquerda
+9P: 120 > 100 - Descendo subarvore direita
+10P: 120 < 150 - Descendo subarvore esquerda - folha nula - inserindo
+
+Sequencia: 100,200,300,150,120
+
+1P: Inserindo 100
+2P: 200 > 100 - Descendo subarvore direita - folha nula - inserindo 200
+3P: 300 > 100 - Descendo subarvore direita
+4P: 300 > 200 - Descendo subarvore direita - folha nula - inserindo 300
+5P: 150 < 200 - Descendo subarvore esquerda
+6P: 150 > 100 - Descendo subarvore direita - folha nula - inserindo 150
+7P: 120 < 200 - Descendo aubarvore esquerda
+8P: 120 > 100 - Descendo subarvore direita
+9P: 120 < 150 - Descendo subarvore esquerda - folha nula - inserindo 120
+
+Sequancia: 500,100,200,800,300,400,350
+
+1P: Inserindo 500
+2P: 100 < 500 - Descendo subarvore esquerda - folha nula - inserindo 100
+3P: 200 < 500 - Descendo subarvore esquerda
+4P: 200 > 100 - Descendo subarvore direita - folha nula - inserindo 200
+5P: Case 2: Nodo e pai são rubros. rodar para esquerda - rotação para esquerda
+6P: 800 > 500 - Descendo subarvore direita - 
+7P:
+8P:

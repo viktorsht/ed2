@@ -1,0 +1,15 @@
+Árvore: 500,600,230,190,987,540,234,567
+
+Excluir: 540
+
+1P: É verificado a existência do Nó 540.
+2P: Se consulta_ArvLLRB retornar 0, então é feita a remoção.
+3P: 
+
+velho
+Passos:
+1P: 540 > 500 - Procurando na subárvore direita
+2P: 540 < 600 - Procurando na subárvore esquerda
+3P: 540 == 540 - Encontrou nodo a excluir
+4P: Nodo a deletar não possoi prodecessor inordem. Faça pai do nodo deletadoser o sucessor inordem.
+5P: Nó a ser excluído não tem filho esquerdo.Definir pai do nó excluído para filho direito do nó excluído.
