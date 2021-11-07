@@ -53,11 +53,19 @@ int main() {
       insere23(NULL, &Raiz, num[i], &infoMeio);
     }
     //remover(NULL, &Raiz, 1000);
+
+    /* a função remover não consegue remover as raizes!*/
     printf("ÁRVORE INICIO\n");
     mostrar(Raiz);
+    printf("\n\n\n");
     //printf("Buscas: %d\n",search(Raiz,350,0));
-    remover(NULL,&Raiz,450);
+    //remover(NULL,&Raiz,400);
     remover(NULL,&Raiz,100);
+    remover(NULL,&Raiz,500);
+    //remover(NULL,&Raiz,300);
+    //remover(NULL,&Raiz,600);
+    //remover(NULL,&Raiz,450);
+
 
 
     printf("ÁRVORE FINAL\n");
@@ -77,17 +85,22 @@ int estaContido(Arv23 *Raiz, int info) {
 
 void remover(Arv23 **pai, Arv23 **Raiz, int info) {
     if (*Raiz != NULL) {
-        if (estaContido(*Raiz, info) != 0) {
+        if (estaContido(*Raiz, info) != 0) { // se 0 é pq não é raiz
 
             if (*pai == NULL && folha(*Raiz)) { // Verifica se a Raiz da Árvore é um nó Folha.
+              printf("estou no primeiro if\n");
                 if (estaContido(*Raiz, info) == 1)
                     (**Raiz).chaveEsq = (**Raiz).chaveDir;
                 (**Raiz).chaveDir = 0;
 
-                if ((**Raiz).nChaves == 2)
-                    (**Raiz).nChaves = 1;
-                else
-                    *Raiz = NULL;
+                if ((**Raiz).nChaves == 2){
+
+                  (**Raiz).nChaves = 1;
+                }
+                else{
+
+                  *Raiz = NULL;
+                }
             }
 
             else if (*pai == NULL) {
@@ -271,7 +284,8 @@ void remover(Arv23 **pai, Arv23 **Raiz, int info) {
                 }
             }
 
-            else if (*pai != NULL && folha(*Raiz) == 0) {
+            else if (*pai != NULL && !folha(*Raiz)) {
+
                 if (estaContido(*Raiz, info) == 2) {
                     if ((**Raiz).dir->nChaves == 2) {
                         (**Raiz).chaveDir = (**Raiz).dir->chaveEsq;
@@ -320,21 +334,27 @@ void remover(Arv23 **pai, Arv23 **Raiz, int info) {
                 }
 
             }
+            else{
+              printf("não entrei em ninguém\n");
+            }
         }
 
-        else if (info < (**Raiz).chaveEsq)
-            remover(Raiz, &(**Raiz).esq, info);
+        else if (info < (**Raiz).chaveEsq){
+          remover(Raiz, &(**Raiz).esq, info);
+        }
 
-        else if ((**Raiz).nChaves == 1)
-            remover(Raiz, &(**Raiz).centro, info);
+        else if ((**Raiz).nChaves == 1){
+          remover(Raiz, &(**Raiz).centro, info);
+        }
 
-        else if (info < (**Raiz).chaveDir)
-            remover(Raiz, &(**Raiz).centro, info);
+        else if (info < (**Raiz).chaveDir){
+          remover(Raiz, &(**Raiz).centro, info);
+        }
 
-        else
-            remover(Raiz, &(**Raiz).dir, info);
+        else{
+          remover(Raiz, &(**Raiz).dir, info);
+        }
     }
-
 }
 
 void mostrar(Arv23 *raiz) {
@@ -412,53 +432,360 @@ Arv23 *quebraNo(Arv23 **Raiz, Arv23 *NovoNo, int info, int *infoMeio) {
     return Novo;
 }
 
-Arv23 *insere23(Arv23 *pai, Arv23 **Raiz, int info, int *infoMeio) {
-    Arv23 *novo;
 
-    if (*Raiz == NULL)
-        *Raiz = criaNO(info, NULL, NULL);
-    else {
-        if (folha(*Raiz)) {
-            if ((**Raiz).nChaves == 1) {
-                *Raiz = adicionaNo(*Raiz, info, NULL);
-                novo = NULL;
-            } else {
-                novo = quebraNo(Raiz, NULL, info, infoMeio);
+Arv23 *insereArv23(Arv23 *Pai,Arv23 **Raiz, int Valor, int *Sobe)
+{
+  Arv23 *MaiorNo;
+  MaiorNo = NULL;
+	if (*Raiz == NULL)
+	{
+		*Raiz = criaNo(Valor,NULL,NULL);
 
-                if (pai == NULL) {
-                    *Raiz = criaNO(*infoMeio, *Raiz, novo);
-                    novo = NULL;
-			    }
-            }
-        } else {
-            if (info < (**Raiz).chaveEsq)
-                novo = insere23(*Raiz, &(**Raiz).esq, info, infoMeio);
+	}else {
+		if(ehFolha(*Raiz))
+		{
+			if((**Raiz).NInfos == 1)
+				*Raiz = adicionaNo(*Raiz,Valor,NULL);
+			else { Arv23 *NovoNo;
+				     NovoNo = NULL;
+				    quebraNo(Raiz,Valor, NULL,Sobe, &NovoNo);
 
-            else if ((**Raiz).nChaves == 1)
-                novo = insere23(*Raiz, &(**Raiz).centro, info, infoMeio);
+					 if(Pai == NULL)
+					{
+						Arv23 *FEsq, *FCen;
+						FEsq = *Raiz;
+						FCen = NovoNo;
 
-            else if (info < (**Raiz).chaveDir)
-                novo = insere23(*Raiz, &(**Raiz).centro, info, infoMeio);
+						*Raiz = criaNo(*Sobe,FEsq,FCen);
 
-            else
-                novo = insere23(*Raiz, &(**Raiz).dir, info, infoMeio);
+						MaiorNo = NULL;
+					}
+				    else MaiorNo = NovoNo;
+				}
+		}
+		else
+			{
+			 if(Valor < (**Raiz).Info1)
+			   MaiorNo = insereArv23(*Raiz,&((*Raiz)->esq), Valor,Sobe);
+			  else if((Valor < (**Raiz).Info2 && (**Raiz).NInfos == 2) || (**Raiz).NInfos == 1)
+					{
+						MaiorNo = insereArv23(*Raiz,&((*Raiz)->cen), Valor,Sobe);
+					}
+			      else {
+						MaiorNo = insereArv23(*Raiz,&((*Raiz)->dir), Valor,Sobe);
+					}
+			  if(MaiorNo != NULL)
+			 	{
+					if((**Raiz).NInfos == 1)
+						{ *Raiz = adicionaNo(*Raiz,*Sobe,MaiorNo);
+							MaiorNo = NULL;
+						}
+					else { int NovoSobe;
+						Arv23 *NovoNo;
+						quebraNo(Raiz,*Sobe, MaiorNo,&NovoSobe, &NovoNo);
+						if(Pai == NULL)
+							{ Arv23 *Novo;
+								Novo = criaNo(NovoSobe,*Raiz,NovoNo);
+								*Raiz = Novo;
+								MaiorNo = NULL;
+							}
+						else MaiorNo = NovoNo;
+					}
 
-            if (novo != NULL) {
-                if ((**Raiz).nChaves == 1) {
-                    *Raiz = adicionaNo(*Raiz, *infoMeio, novo);
-                    novo = NULL;
-                } else {
-                    novo = quebraNo(Raiz, novo, *infoMeio, infoMeio);
+				}
+		}
+		}
 
-                    if (pai == NULL) {
-                        *Raiz = criaNO(*infoMeio, *Raiz, novo);
-                        novo = NULL;
-                    }
-                }
-            }
 
-        }
-    }
-
-    return novo;
+ return MaiorNo;
 }
+
+/*
+int contains(DTNode root, int key)
+
+{
+	if (key == root->key_left)
+		return 1; // se esta na informação da esquerda
+	else if(key == root->key_right)
+		return 2; // se esta na informação da direita
+
+	return 0; // em nenhuma das infos
+}
+
+int dttDelete(DTNode *parent, DTNode *root, int key)
+{
+
+	if (*root != NULL)
+	{
+		if (contains(*root, key) != 0)
+		{
+			if (*parent == NULL && isLeaf(*root))
+			{
+				if (contains(*root, key) == 1)
+					(*root)->key_left = (*root)->key_right;
+
+				(*root)->key_right = 0; // deixar vazia
+
+				if((*root)->total_keys == 2)
+					(*root)->total_keys = 1;
+				else
+					*root = NULL;
+			}
+			else if(*parent == NULL)
+			{
+				if((*root)->total_keys == 2)
+				{
+					if(contains(*root, key) == 2 && (*root)->right->total_keys == 2)
+					{
+						(*root)->key_right = (*root)->right->key_left;
+						(*root)->right->key_left = (*root)->right->key_right;
+						(*root)->right->key_right = 0;
+						(*root)->right->total_keys = 1;
+					}
+					else if(contains(*root, key) == 2 && (*root)->cen->total_keys ==2)
+					{
+						(*root)->key_right = (*root)->cen->key_right;
+						(*root)->cen->key_right = 0;
+						(*root)->right->total_keys = 1;
+					}
+					else if(contains(*root, key) == 2 && (*root)->left->total_keys == 2)
+					{
+						(*root)->key_right = 0;
+						(*root)->total_keys = 1;
+						(*root)->cen->key_right = (*root)->right->key_left;
+						(*root)->cen->total_keys = 2;
+						(*root)->right = NULL;
+					}
+					else if(contains(*root, key) == 2 && (*root)->left->total_keys == 1)
+					{
+						(*root)->key_right = 0;
+						(*root)->total_keys = 1;
+						(*root)->cen->key_right = (*root)->right->key_left;
+						(*root)->cen->total_keys = 2;
+						(*root)->right = NULL;
+					}
+					else if(contains(*root, key) == 1 && (*root)->cen->total_keys == 2)
+					{
+						(*root)->key_left = (*root)->cen->key_left;
+						(*root)->cen->key_left = (*root)->cen->key_right;
+						(*root)->cen->key_right = 0;
+						(*root)->cen->total_keys = 1;
+					}
+					else if(contains(*root, key) == 1 && (*root)->left->total_keys == 2)
+					{
+						(*root)->key_left = (*root)->left->key_right;
+						(*root)->left->key_right = 0;
+						(*root)->left->total_keys = 1;
+					}
+					else if (contains(*root, key) == 1 && (*root)->cen->total_keys == 1)
+					{
+						(*root)->key_left = (*root)->key_right;
+						(*root)->key_right = 0;
+						(*root)->total_keys = 1;
+						(*root)->left->key_right = (*root)->cen->key_left;
+						(*root)->left->total_keys = 2;
+						(*root)->cen = NULL;
+					}
+					else if ((*root)->total_keys == 1)
+					{
+						if((*root)->cen->total_keys == 2)
+						{
+							(*root)->key_left = (*root)->cen->key_left;
+							(*root)->cen->key_left = (*root)->cen->key_right;
+							(*root)->cen->key_right = 0;
+							(*root)->cen->total_keys = 1;
+						}
+						else if((*root)->left->total_keys == 2)
+						{
+							(*root)->key_left = (*root)->left->key_right;
+							(*root)->left->key_right = 0;
+							(*root)->left->total_keys = 1;
+						}
+						else
+						{
+							(*root)->left->key_right = (*root)->cen->key_left;
+							(*root)->left->total_keys = 2;
+							(*root)->right = NULL;
+							*root = (*root)->left;
+						}
+					}
+				}
+			}
+			else if(*parent != NULL && isLeaf(*root))
+			{
+				if ((*root)->total_keys == 2)
+				{
+					if(contains(*root, key) == 1)
+						(*root)->key_left = (*root)->key_right;
+
+					(*root)->key_right = 0;
+					(*root)->total_keys = 1;
+				}
+				else if ((*parent)->total_keys == 2)
+				{
+					if (key > (*parent)->key_right && (*parent)->cen->total_keys == 2)
+					{
+						(*root)->key_left = (*parent)->key_right;
+						(*parent)->key_right = (*parent)->cen->key_right;
+						(*parent)->cen->key_right = 0;
+						(*parent)->cen->total_keys = 1;
+					}
+					else if(key > (*parent)->key_right && (*parent)->cen->total_keys == 1)
+					{
+						(*parent)->cen->key_right = (*parent)->key_right;
+						(*parent)->cen->total_keys = 2;
+						(*parent)->key_right = 0;
+						(*parent)->total_keys = 1;
+						*root = NULL;
+					}
+					else if(key > (*parent)->key_left && (*parent)->right->total_keys == 2)
+					{
+						(*root)->key_left = (*parent)->key_right;
+						(*parent)->key_right = (*parent)->right->key_left;
+						(*parent)->right->key_left = (*parent)->right->key_right;
+						(*parent)->right->key_right = 0;
+						(*parent)->right->total_keys = 1;
+					}
+					else if(key > (*parent)->key_left && (*parent)->right->total_keys == 1)
+					{
+						(*root)->key_left = (*parent)->key_right;
+						(*root)->key_right = (*parent)->right->key_left;
+						(*root)->total_keys = 2;
+						(*parent)->key_right = 0;
+						(*parent)->total_keys = 1;
+						(*parent)->right = NULL;
+					}
+
+					else if(key < (*parent)->key_left && (*parent)->cen->total_keys == 2)
+					{
+						(*root)->key_left = (*parent)->key_left;
+						(*parent)->key_left = (*parent)->cen->key_left;
+						(*parent)->cen->key_left = (*parent)->cen->key_right;
+						(*parent)->cen->key_right = 0;
+						(*parent)->cen->total_keys = 1;
+					}
+					else if (key < (*parent)->key_left && (*parent)->right->total_keys == 2)
+					{
+						(*root)->key_left = (*parent)->key_left;
+						(*parent)->key_left = (*parent)->cen->key_left;
+						(*parent)->cen->key_left = (*parent)->key_right;
+
+						(*parent)->key_right = (*parent)->right->key_left;
+						(*parent)->right->key_left = (*parent)->right->key_right;
+						(*parent)->right->key_right = 0;
+						(*parent)->right->total_keys = 1;
+					}
+					else
+					{
+						(*root)->key_left = (*parent)->key_left;
+						(*parent)->key_left = (*parent)->cen->key_left;
+						(*parent)->cen->key_left = (*parent)->key_right;
+						(*parent)->key_right = 0;
+						(*parent)->total_keys = 1;
+						(*parent)->cen->key_right = (*parent)->right->key_left;
+						(*parent)->cen->total_keys = 2;
+						(*parent)->right = NULL;
+					}
+				}
+
+				else
+				{
+					if (key > (*parent)->key_left && (*parent)->left->total_keys == 2)
+					{
+						(*root)->key_left = (*parent)->key_left;
+						(*parent)->key_left = (*parent)->left->key_right;
+						(*parent)->left->key_right = 0;
+						(*parent)->left->total_keys = 1;
+					}
+					else if (key < (*parent)->key_left && (*parent)->cen->total_keys == 2)
+					{
+						(*root)->key_left = (*parent)->key_left;
+						(*parent)->key_left = (*parent)->cen->key_left;
+						(*parent)->cen->key_left = (*parent)->cen->key_right;
+						(*parent)->cen->key_right = 0;
+						(*parent)->cen->total_keys = 1;
+					}
+					else if(key < (*parent)->key_left)
+					{
+						(*root)->key_left = (*parent)->key_left;
+						(*root)->key_right = (*parent)->cen->key_left;
+						(*root)->total_keys = 2;
+						*parent = *root;
+					}
+					else
+					{
+						(*parent)->left->key_right = (*parent)->key_left;
+						(*parent)->left->total_keys = 2;
+						*parent = (*parent)->left;
+					}
+				}
+			}
+
+			else if(*parent != NULL && !isLeaf(*root))
+			{
+				if(contains(*root, key) == 2)
+				{
+					if ((*root)->right->total_keys == 2)
+					{
+						(*root)->key_right = (*root)->right->key_left;
+						(*root)->right->key_left = (*root)->right->key_right;
+						(*root)->right->key_right = 0;
+						(*root)->right->total_keys = 1;
+					}
+					else if((*root)->cen->total_keys == 2)
+					{
+						(*root)->key_right = (*root)->cen->key_right;
+						(*root)->cen->key_right = 0;
+						(*root)->cen->total_keys = 1;
+					}
+					else
+					{
+						(*root)->cen->key_right = (*root)->right->key_left;
+						(*root)->cen->total_keys = 2;
+						(*root)->key_right = 0;
+						(*root)->total_keys = 2;
+						(*root)->right = NULL;
+					}
+				}
+				else if (contains(*root, key) == 1)
+				{
+					if ((*root)->cen->total_keys == 2)
+					{
+						(*root)->key_left = (*root)->cen->key_left;
+						(*root)->cen->key_left = (*root)->cen->key_right;
+						(*root)->cen->key_right = 0;
+						(*root)->cen->total_keys = 1;
+					}
+					else if((*root)->left->total_keys == 2)
+					{
+						(*root)->key_left = (*root)->left->key_right;
+						(*root)->left->key_right = 0;
+						(*root)->left->total_keys = 1;
+					}
+					else
+					{
+						(*root)->key_left = (*root)->cen->key_left;
+						(*root)->cen->key_left = (*root)->key_right;
+						(*root)->key_right = (*root)->right->key_left;
+						(*root)->right->key_left = (*root)->right->key_right;
+						(*root)->right->key_right = 0;
+						(*root)->right->total_keys = 1;
+					}
+				}
+			}
+
+		}
+		else if (key < (*root)->key_left)
+			dttDelete(root, &(*root)->left, key);
+		else if((*root)->total_keys == 1)
+			dttDelete(root, &(*root)->cen, key);
+		else if(key < (*root)->key_right)
+			dttDelete(root, &(*root)->cen, key);
+		else
+			dttDelete(root, &(*root)->right, key);
+
+	}
+
+
+}
+*/

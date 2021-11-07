@@ -17,7 +17,7 @@ return folha;
 struct Arv23 *criaNo(int Info, struct Arv23 *FEsq, struct Arv23 *FCen){
 	struct Arv23 *No;
 
-	No = (struct Arv23 *) malloc(sizeof(struct Arv23 *));
+	No = (struct Arv23 *) malloc(sizeof(struct Arv23));
 	(*No).Info1 = Info;
 	(*No).NInfos = 1;
 	(*No).esq = FEsq;
@@ -69,8 +69,8 @@ void quebraNo(struct Arv23 **No, int Info, struct Arv23 *FilhoMaior, int *Sobe, 
 	}
 }
 
-struct Arv23 *insereArv23(struct Arv23 **Pai,struct Arv23 **Raiz, int Valor, int *Sobe)
-{ int inseriu = 1;
+struct Arv23 *insereArv23(struct Arv23 **Pai,struct Arv23 **Raiz, int Valor, int *Sobe){
+	int inseriu = 1;
   struct Arv23 *No;
   No = NULL;
 	if (*Raiz == NULL) {
@@ -83,25 +83,26 @@ struct Arv23 *insereArv23(struct Arv23 **Pai,struct Arv23 **Raiz, int Valor, int
 		else{
 			quebraNo(Raiz,Valor, NULL,Sobe, &No);
 			if(Pai == NULL)
-				{ struct Arv23 *Novo;
+				{
+					struct Arv23 *Novo;
 					Novo = criaNo(*Sobe,*Raiz,No);
 					*Raiz = Novo;
 					No = NULL;
 				}
 			}
-		}
-		else {if(Valor < (**Raiz).Info1)
-			   No = insereArv23(Raiz,&((*Raiz)->esq), Valor,Sobe);
-			  else if((Valor < (**Raiz).Info2 && (**Raiz).NInfos == 2) || (**Raiz).NInfos == 1)
-				    No = insereArv23(Raiz,&((*Raiz)->cen), Valor,Sobe);
-			      else No = insereArv23(Raiz,&((*Raiz)->dir), Valor,Sobe);
+	}
+		else {
+			if(Valor < (**Raiz).Info1) No = insereArv23(Raiz,&((*Raiz)->esq), Valor,Sobe);
+			else if((Valor < (**Raiz).Info2 && (**Raiz).NInfos == 2) || (**Raiz).NInfos == 1) No = insereArv23(Raiz,&((*Raiz)->cen), Valor,Sobe);
+			else No = insereArv23(Raiz,&((*Raiz)->dir), Valor,Sobe);
 			  if(No != NULL)
 			 	{
 					if((**Raiz).NInfos == 1)
 						{ *Raiz = adicionaNo(*Raiz,*Sobe,No);
 							No = NULL;
 						}
-					else { int NovoSobe;
+					else {
+						int NovoSobe;
 						struct Arv23 *NovoNo;
 						quebraNo(Raiz,*Sobe, No,&NovoSobe, &NovoNo);
 						if(Pai == NULL)
@@ -119,8 +120,18 @@ struct Arv23 *insereArv23(struct Arv23 **Pai,struct Arv23 **Raiz, int Valor, int
 
  return No;
 }
-
+void mostrar(struct Arv23 *Raiz) {
+    if (Raiz != NULL) {
+        printf("%d %d\n", Raiz->Info1, Raiz->Info2/*, Raiz->nChaves*/);
+        mostrar(Raiz->esq);
+        mostrar(Raiz->cen);
+        mostrar(Raiz->dir);
+    }
+}
 int main() {
-
+	struct Arv23 *raiz = NULL;
+	int sobe;
+	insereArv23(NULL, &raiz, 400, &sobe);
+	mostrar(raiz);
 	return 0;
 }
